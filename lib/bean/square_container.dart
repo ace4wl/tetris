@@ -40,7 +40,7 @@ class SquareContainer {
         realHeight.toDouble());
 
     //辅助线
-    /*for (int i = 0; i < Constant.ROWS; i++) {
+    for (int i = 0; i < Constant.ROWS; i++) {
       _subLinePath.moveTo(
           background.left, background.top + i * Constant.SQUARE_HEIGHT);
       _subLinePath.lineTo(
@@ -52,7 +52,7 @@ class SquareContainer {
           background.left + i * Constant.SQUARE_WIDTH, background.bottom);
       _subLinePath.lineTo(
           background.left + i * Constant.SQUARE_WIDTH, background.top);
-    }*/
+    }
   }
 
   // 以行数为key,行数对应的单元rect列表为值分组
@@ -147,7 +147,7 @@ class SquareContainer {
   void draw(Canvas canvas, Paint paint) {
     paint.style = PaintingStyle.stroke;
     //绘制网格
-    paint..color = Colors.amber;
+    paint..color = Colors.black12;
     canvas.drawPath(_subLinePath, paint);
     //绘制边框
     paint..color = Colors.blueAccent;
