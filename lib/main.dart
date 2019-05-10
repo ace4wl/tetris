@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:tetris/constant/constant.dart';
 import 'package:tetris/draw/square_canvas.dart';
+import 'package:tetris/game_launch.dart';
 
 void main() => runApp(MyApp());
 
@@ -33,7 +34,7 @@ class MyStatelessWidget extends StatelessWidget {
       appBar: AppBar(
         title: Text('俄罗斯方块'),
       ),
-      body: new SquareCanvasWidget(),
+      body: new GameLaunch(),
     );
   }
 }

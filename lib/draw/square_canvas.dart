@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:ui';
+import 'dart:ui' as ui show TextStyle;
 
 import 'package:flutter/material.dart';
 import 'package:tetris/bean/square.dart';
@@ -10,25 +12,56 @@ import 'package:tetris/square_factory.dart';
 class SquareCanvasPainter extends CustomPainter {
   final SquareContainer _container;
   final Square _square;
+  final int _count;
 
-  SquareCanvasPainter(this._container, this._square);
+  //倒计时的数字设置的颜色
+  final List<Color> _colors = [
+    Colors.purple,
+    Colors.blue,
+    Colors.amberAccent,
+    Colors.pink,
+    Colors.deepOrange
+  ];
+
+  SquareCanvasPainter(this._container, this._square, this._count);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final _paint = new Paint()
-      ..strokeCap = StrokeCap.square
-      ..strokeWidth = 1.0;
-
-    _container.draw(canvas, _paint);
-
-    _paint.color = Colors.black;
-
-    //绘制正在操作的图形
-    List<SquareRect> _curRect = _square.get();
-
-    for (int i = 0; i < _curRect.length; i++) {
-      _curRect[i].draw(canvas, _paint);
+    Paint _paint = new Paint()..strokeCap = StrokeCap.square;
+    //******************************绘制倒计时逻辑*******************************
+    if (_count > 0) {
+      ParagraphBuilder builder =
+          new ParagraphBuilder(new ParagraphStyle(fontSize: 180));
+      ParagraphConstraints pc = ParagraphConstraints(width: size.width);
+      builder.pushStyle(ui.TextStyle(
+          //background: new Paint()..color = Colors.red,
+          color: _colors[_count % 5],
+          fontWeight: FontWeight.w900));
+      builder.addText(_count.toString());
+      Paragraph paragraph = builder.build()..layout(pc);
+      /*canvas.drawParagraph(paragraph,
+          Offset(paragraph.width / 3, (size.height - paragraph.height) / 2));*/
+      canvas.drawParagraph(
+          paragraph,
+          Offset(
+              (size.width - paragraph.minIntrinsicWidth) / 2, size.height / 3));
     }
+    //******************************绘制倒计时逻辑*******************************
+
+    //******************************绘制倒计时逻辑*********************************
+    if (_square != null) {
+      _container.draw(canvas, _paint);
+
+      _paint.color = Colors.black;
+
+      //绘制正在操作的图形
+      List<SquareRect> _curRect = _square.get();
+
+      for (int i = 0; i < _curRect.length; i++) {
+        _curRect[i].draw(canvas, _paint);
+      }
+    }
+    //******************************绘制游戏逻辑*********************************
   }
 
   @override
@@ -46,39 +79,32 @@ class SquareCanvasWidget extends StatefulWidget {
 }
 
 class SquareCanvasState extends State<SquareCanvasWidget> {
-  Timer _timer;
+  Timer _gameTimer;
+  Timer _countdownTimer;
 
   SquareContainer _container;
   Square _square;
 
   TapDownDetails _details;
 
+  //倒计时游戏开始
+  int count = 5;
+
+  //图形的下落间隔时间
   int _dur = 300;
 
   @override
   void initState() {
     super.initState();
     _container = new SquareContainer();
-    _square = new SquareFactory().create(_container.background);
-    _timer = new Timer.periodic(Duration(milliseconds: _dur), (timer) {
-      setState(() {
-        if (_container.checkDownMove(_square)) {
-          _square.y += Constant.SQUARE_HEIGHT;
-        } else {
-          if (_container.gameOver()) {
-            _container.reset();
-          }
-          _square = new SquareFactory().create(_container.background);
-        }
-      });
-    });
+    _startCountdown();
   }
 
   @override
   Widget build(BuildContext context) {
     return new GestureDetector(
       child: new CustomPaint(
-        painter: new SquareCanvasPainter(_container, _square),
+        painter: new SquareCanvasPainter(_container, _square, count),
         /***************************************************************************
          * ***************************************************************************
          * ***************************************************************************
@@ -104,6 +130,9 @@ class SquareCanvasState extends State<SquareCanvasWidget> {
     );
   }
 
+  //点击边界左侧，左移
+  //点击边界右侧，右移
+  //点击容器，旋转
   void _onClick() {
     if (_details == null) return;
 
@@ -133,6 +162,36 @@ class SquareCanvasState extends State<SquareCanvasWidget> {
   @override
   void dispose() {
     super.dispose();
-    _timer?.cancel();
+    _gameTimer?.cancel();
+    _countdownTimer?.cancel();
+  }
+
+  //开始倒计时
+  void _startCountdown() {
+    _countdownTimer = new Timer.periodic(Duration(milliseconds: 1000), (timer) {
+      setState(() {
+        count--;
+        if (count == 0) {
+          _countdownTimer.cancel();
+          _startPlay();
+        }
+      });
+    });
+  }
+
+  void _startPlay() {
+    _square = new SquareFactory().create(_container.background);
+    _gameTimer = new Timer.periodic(Duration(milliseconds: _dur), (timer) {
+      setState(() {
+        if (_container.checkDownMove(_square)) {
+          _square.y += Constant.SQUARE_HEIGHT;
+        } else {
+          if (_container.gameOver()) {
+            _container.reset();
+          }
+          _square = new SquareFactory().create(_container.background);
+        }
+      });
+    });
   }
 }
