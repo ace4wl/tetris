@@ -6,8 +6,13 @@ import 'package:tetris/constant/constant.dart';
 import 'package:tetris/game_launch.dart';
 
 void main() {
+  //强制竖屏
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  //简易的沉浸式
+  SystemUiOverlayStyle systemUiOverlayStyle =
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+  SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   runApp(MyApp());
 }
 
@@ -16,7 +21,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Code Sample for material.AppBar.actions',
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
@@ -36,7 +40,8 @@ class MyStatelessWidget extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('俄罗斯方块'),
+        title: Text(''),
+        elevation: 0,
       ),
       body: new GameLaunch(),
     );

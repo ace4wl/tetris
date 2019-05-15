@@ -13,10 +13,14 @@ class GamePlayWidget extends StatelessWidget {
           primaryColor: Colors.white,
         ),
         home: new Scaffold(
-          appBar: AppBar(
-            title: Text('俄罗斯方块'),
-          ),
-          body: new SquareCanvasWidget(),
-        ));
+            appBar: AppBar(
+              title: Text(''),
+              elevation: 0,
+              backgroundColor: Colors.white,
+            ),
+            body: new Container(
+              child: new SquareCanvasWidget(),
+              color: Colors.white,
+            )));
   }
 }

@@ -5,52 +5,55 @@ import 'package:tetris/game_play.dart';
 class GameLaunch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        new Expanded(
-            flex: 1,
-            child: new Container(
-              child: new Text(
-                "俄罗斯方块",
-                textAlign: TextAlign.center,
-                style: new TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 40,
-                    color: Colors.blueAccent),
-              ),
-              alignment: Alignment.center,
-            )),
-        new Expanded(
-          flex: 4,
-          child: new Column(
-            children: <Widget>[
-              new Container(
-                margin: EdgeInsets.only(top: 15),
-                child: _createTextButton('开始游戏', () {
-                  _startGame(context);
-                }),
-              ),
-              new Container(
-                  margin: EdgeInsets.only(top: 30),
-                  child: _createTextButton('操作说明', () {
+    return new Container(
+      color: Colors.white,
+      child: new Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          new Expanded(
+              flex: 1,
+              child: new Container(
+                child: new Text(
+                  "俄罗斯方块",
+                  textAlign: TextAlign.center,
+                  style: new TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 40,
+                      color: Colors.blueAccent),
+                ),
+                alignment: Alignment.center,
+              )),
+          new Expanded(
+            flex: 4,
+            child: new Column(
+              children: <Widget>[
+                new Container(
+                  margin: EdgeInsets.only(top: 15),
+                  child: _createTextButton('开始游戏', () {
                     _startGame(context);
-                  })),
-            ],
+                  }),
+                ),
+                new Container(
+                    margin: EdgeInsets.only(top: 30),
+                    child: _createTextButton('操作说明', () {
+                      _startGame(context);
+                    })),
+              ],
+            ),
           ),
-        ),
-        new Expanded(
-          flex: 1,
-          child: new Text(
-            "Lyn",
-            style: new TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
-                fontSize: 14),
+          new Expanded(
+            flex: 1,
+            child: new Text(
+              "Lyn",
+              style: new TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                  fontSize: 14),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
