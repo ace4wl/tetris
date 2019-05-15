@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:tetris/bean/square.dart';
 import 'package:tetris/bean/square_container.dart';
 import 'package:tetris/bean/square_rect.dart';
+import 'package:tetris/constant/area.dart';
 import 'package:tetris/constant/constant.dart';
 import 'package:tetris/square_factory.dart';
 
@@ -48,7 +49,7 @@ class SquareCanvasPainter extends CustomPainter {
     }
     //******************************绘制倒计时逻辑*******************************
 
-    //******************************绘制倒计时逻辑*********************************
+    //******************************绘制游戏逻辑*********************************
     if (_square != null) {
       _container.draw(canvas, _paint);
 
@@ -62,6 +63,19 @@ class SquareCanvasPainter extends CustomPainter {
       }
     }
     //******************************绘制游戏逻辑*********************************
+
+    //********************************绘制其他***********************************
+    if (_square != null) {
+      ParagraphBuilder builder =
+          new ParagraphBuilder(new ParagraphStyle(fontSize: 20));
+      ParagraphConstraints pc = ParagraphConstraints(width: Area.topRect.width);
+      builder.pushStyle(
+          ui.TextStyle(color: Colors.pink, fontWeight: FontWeight.w600));
+      builder.addText('score : ' + _container.getScore().toString());
+      Paragraph paragraph = builder.build()..layout(pc);
+      canvas.drawParagraph(paragraph, Offset(Area.boardRect.left / 2, 0));
+    }
+    //********************************绘制其他***********************************
   }
 
   @override
@@ -114,7 +128,7 @@ class SquareCanvasState extends State<SquareCanvasWidget> {
          * ***************************************************************************
          * ***************************************************************************
          */
-        size: Size(size.width,size.height),
+        size: Size(size.width, size.height),
       ),
       onTapDown: (TapDownDetails details) {
         _details = details;

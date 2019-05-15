@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:tetris/bean/score.dart';
 import 'package:tetris/bean/square.dart';
 import 'package:tetris/bean/square_rect.dart';
 import 'package:tetris/constant/area.dart';
@@ -14,7 +15,11 @@ class SquareContainer {
 
   Path _subLinePath = new Path();
 
+  Score _score;
+
   SquareContainer() {
+    _score = new Score();
+
     //背景
     background = Area.boardRect;
 
@@ -181,6 +186,8 @@ class SquareContainer {
       return a > b ? 1 : 0;
     });
 
+    _score.cul(removeRows.length);
+
     //遍历删除的行，大于被删除的行的Rect高度减小一个单位
     List<SquareRect> translateRect = <SquareRect>[];
     for (int r in removeRows) {
@@ -201,6 +208,11 @@ class SquareContainer {
       from = _group[r.top];
       from.add(r);
     }
+  }
+
+  //获取分数
+  num getScore() {
+    return _score.score;
   }
 
   void reset() {
