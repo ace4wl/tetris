@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tetris/bean/square.dart';
 import 'package:tetris/bean/square_rect.dart';
+import 'package:tetris/constant/area.dart';
 import 'package:tetris/constant/constant.dart';
 
 class SquareContainer {
@@ -14,30 +15,8 @@ class SquareContainer {
   Path _subLinePath = new Path();
 
   SquareContainer() {
-    //计算当前宽高下的单位宽高
-    int width =
-        Constant.CANVAS_WIDTH - Constant.PADDING_LEFT - Constant.PADDING_RIGHT;
-    int height =
-        Constant.CANVAS_HEIGHT - Constant.PADDING_BOTTOM - Constant.PADDING_TOP;
-
-    if (width / Constant.COLUMNS > height / Constant.ROWS) {
-      Constant.SQUARE_HEIGHT =
-          Constant.SQUARE_WIDTH = (height / Constant.ROWS).floor();
-    } else {
-      Constant.SQUARE_HEIGHT =
-          Constant.SQUARE_WIDTH = (width / Constant.COLUMNS).floor();
-    }
-
-    int realWidth = Constant.SQUARE_WIDTH * Constant.COLUMNS;
-    int realHeight = Constant.SQUARE_HEIGHT * Constant.ROWS;
-
     //背景
-    background = new Rect.fromLTWH(
-        ((Constant.CANVAS_WIDTH - realWidth) / 2).toDouble(),
-        (Constant.CANVAS_HEIGHT - Constant.PADDING_BOTTOM - realHeight)
-            .toDouble(),
-        realWidth.toDouble(),
-        realHeight.toDouble());
+    background = Area.boardRect;
 
     //辅助线
     for (int i = 0; i < Constant.ROWS; i++) {

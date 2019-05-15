@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tetris/constant/constant.dart';
 import 'package:tetris/game_launch.dart';
 
 void main() {
@@ -34,10 +33,6 @@ class MyStatelessWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    Constant.CANVAS_WIDTH = size.width.floor();
-    Constant.CANVAS_HEIGHT = size.height.floor();
-
     return Scaffold(
       appBar: AppBar(
         title: Text(''),

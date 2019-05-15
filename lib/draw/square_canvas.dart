@@ -102,6 +102,7 @@ class SquareCanvasState extends State<SquareCanvasWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return new GestureDetector(
       child: new CustomPaint(
         painter: new SquareCanvasPainter(_container, _square, count),
@@ -113,8 +114,7 @@ class SquareCanvasState extends State<SquareCanvasWidget> {
          * ***************************************************************************
          * ***************************************************************************
          */
-        size: Size(Constant.CANVAS_WIDTH.toDouble(),
-            Constant.CANVAS_HEIGHT.toDouble()),
+        size: Size(size.width,size.height),
       ),
       onTapDown: (TapDownDetails details) {
         _details = details;
